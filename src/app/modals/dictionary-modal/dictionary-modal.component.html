@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{myModalTitle}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div [ngSwitch]="myModalContent">
+    <div *ngSwitchCase="'Word'">
+      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
+        <div *ngFor="let word of words">
+          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
+                  class="btn btn-outline-primary" (click)="close(word)">{{word}}</button>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'Punctuation'">
+      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
+        <div *ngFor="let punct of punctuations">
+          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
+                  class="btn btn-outline-primary" (click)="close(punct)">{{punct}}</button>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'POS'">
+      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
+        <div *ngFor="let pos of partsOS">
+          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
+                  class="btn btn-outline-primary" (click)="close(pos)">{{pos}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-danger" (click)="close('')">Close</button>
+</div>

@@ -1,0 +1,100 @@
+
+<br><br>
+<form class="container">
+  <div class="text-center">
+    <h1><b>Word Input</b></h1>
+  </div>
+  <br>
+  <div class="form-inline">
+    <div class="input-group mb-3 mx-auto">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1">Word Base Form</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Type Word Here" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+  </div>
+  <br>
+  <div class="text-center">
+    <h1><b>Characteristics</b></h1>
+  </div>
+  <br>
+  <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="25px grid">
+    <div  fxFlex="0 1 calc(33.3% - 32px)">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="type">Word Type</span>
+        </div>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownType"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{wordType}}
+        </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" *ngFor="let type of types" (click)="updateSelection('type', type)">{{type}}</a>
+          </div>
+      </div>
+    </div>
+    <div  fxFlex="0 1 calc(33.3% - 32px)">
+      <div class=" input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="gender">Word Gender</span>
+        </div>
+
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownGender"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{wordGender}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" *ngFor="let gender of genders" (click)="updateSelection('gender', gender)">{{gender}}</a>
+        </div>
+      </div>
+    </div>
+    <div  fxFlex="0 1 calc(33.3% - 32px)">
+      <div class=" input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="person">Word Person</span>
+        </div>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownPerson"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{wordPerson}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" *ngFor="let person of persons" (click)="updateSelection('person', person)">{{person}}</a>
+        </div>
+      </div>
+    </div>
+    <div  fxFlex="0 1 calc(33.3% - 32px)">
+      <div class=" input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="number">Word Number</span>
+        </div>
+
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownNumber"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{wordNumber}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" *ngFor="let number of numbers" (click)="updateSelection('number', number)">{{number}}</a>
+        </div>
+      </div>
+    </div>
+    <div  fxFlex="0 1 calc(33.3% - 32px)">
+      <div class=" input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="tense">Word Tense</span>
+        </div>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuType"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{wordTense}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" *ngFor="let tense of tenses" (click)="updateSelection('tense', tense)">{{tense}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="text-center">
+    <button type="submit" class="btn btn-outline-success" [disabled]="checkCompletion()"
+            (click)="saveWord()">Save Word</button>
+  </div>
+</form>

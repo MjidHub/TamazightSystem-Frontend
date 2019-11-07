@@ -1,0 +1,12 @@
+.text-center {
+  padding-right: 100px;
+}
+.center-block {
+  display: table;  /* Instead of display:block */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx-auto {
+  padding-right: 100px;
+}
