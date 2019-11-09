@@ -10,12 +10,12 @@
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{added}}
         </button>
-        <div *ngIf="i === 0 || i === pattern.length-1">
+        <div *ngIf="i === 0">
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#" *ngFor="let type of initPattern" (click)="updatePattern(type, i)">{{type}}</a>
           </div>
         </div>
-        <div *ngIf="i > 0 && i < pattern.length-1">
+        <div *ngIf="i > 0">
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#" *ngFor="let type of patternOptions" (click)="updatePattern(type, i)">{{type}}</a>
           </div>
@@ -24,9 +24,53 @@
     </div>
     <mat-icon style="color:green; cursor: pointer" (click)="addPattern(pattern.length)">add</mat-icon>
   </div>
-  <br>
-  <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
-          (click)="generate('pattern')">Generate Example</button>
+  <div *ngIf="!userInput">
+    <br>
+    <div class="row">
+      <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
+              (click)="activateUserInput()">Input Sample</button>
+      <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
+              (click)="generate('pattern')">Generate Example</button>
+    </div>
+  </div>
+  <div *ngIf="userInput">
+    <br>
+    <div class="row">
+        <div class="fixed-size">
+          <div class="control">
+            <input class="form-control control-width"
+                   placeholder="Search..."
+                   [formControl]="control"
+                   [appAutocomplete]="autocomplete">
+          </div>
+          <app-autocomplete #autocomplete="appAutocomplete">
+            <ng-template appAutocompleteContent>
+              <ng-container *ngIf="(options | filter: control.value) as result">
+                <app-option *ngFor="let option of result" [value]="option.label">
+                  {{ option.label }}
+                </app-option>
+                <app-option class="no-result" *ngIf="!result.length">No result...</app-option>
+              </ng-container>
+            </ng-template>
+          </app-autocomplete>
+          <!--<input class="form-control control-width" [(ngModel)]="sentence[i]" type="text"
+                 (ngModelChange)="filterInput(sentence[i])" id="word{{i}}" [attr.list]= />
+          <datalist id="dynamicWordsList{{i}}">
+            <option *ngFor="let item of filteredOptions" [value]="item">{{item}}</option>
+          </datalist>-->
+          <!--<ng2-completer class="control-width" [datasource]="patternOptions" [minSearchLength]="2"></ng2-completer>-->
+          <!--<input [disabled]="pattern[i] === 'None'" type="text" class="form-control control-width" placeholder=""
+                 id="word{{i}}" aria-label="Username"
+                 [(ngModel)]="word" #it="ngModel" required>
+          <div *ngIf="pattern[i] !== 'None'">
+            <small>Type a {{pattern[i]}} here</small>
+          </div>-->
+      </div>
+    </div>
+    <br>
+    <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
+            (click)="generate('pattern')">Generate Example</button>
+  </div>
   <div *ngIf="generateSentence">
     <br>
     <h2><b>System-Generated Example</b></h2>
@@ -39,44 +83,5 @@
         </div>
       </div>
     </div>
-    <br>
-
   </div>
-  <h1><b>Example</b></h1>
-  <div class="row">
-    <div *ngFor="let added of utterance; let j = index">
-      <div class="dropdown fixed-size">
-        <mat-icon style="color:green; cursor: pointer" (click)="addUtterance(j)">add</mat-icon>
-        <mat-icon style="color:red; cursor: pointer" (click)="removeUtterance(j)">remove</mat-icon>
-        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu{{j}}"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{added}}
-        </button>
-        <div *ngIf="j === 0 || j === utterance.length-1">
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#" *ngFor="let type of initPattern" (click)="updateUtterance(type, j)">{{type}}</a>
-          </div>
-        </div>
-        <div *ngIf="j > 0 && j < utterance.length-1">
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#" *ngFor="let type of patternOptions" (click)="updateUtterance(type, j)">{{type}}</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <mat-icon style="color:green; cursor: pointer" (click)="addUtterance(utterance.length)">add</mat-icon>
-  </div>
-  <br>
-  <button type="button" class="btn btn-outline-success" [disabled]="utterance.length === 0"
-          (click)="generate('utterance')">Generate Example</button>
-
 </div>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
