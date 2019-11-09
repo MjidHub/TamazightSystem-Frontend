@@ -1,86 +1,64 @@
-import {Component, Input, OnInit, Pipe, PipeTransform, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {RemoveChoiceModalComponent} from '../modals/remove-choice-modal/remove-choice-modal.component';
-import {DictionaryModalComponent} from '../modals/dictionary-modal/dictionary-modal.component';
-import {FormControl} from '@angular/forms';
-declare var $: any;
+import {FormBuilder, FormGroup, FormArray, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-example-generation',
   templateUrl: './example-generation.component.html',
-  styleUrls: ['./example-generation.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./example-generation.component.css']
 })
 export class ExampleGenerationComponent implements OnInit {
 
   generateSentence = false;
   userInput = false;
-  /*options = ['mill',
-    'deficit',
-    'freight',
-    'captain',
-    'belly',
-    'sailor',
-    'swim',
-    'ex',
-    'worker',
-    'transfer',
-    'stumble',
-    'slide',
-    'promotion',
-    'missile',
-    'tournament',
-    'advantage',
-    'established',
-    'outlet',
-    'screw',
-    'ministry'];*/
   options = [
-    { id: 1, label: 'One' },
-    { id: 2, label: 'Two' },
-    { id: 3, label: 'Three' }
+    {id: 1, label: 'One'},
+    {id: 2, label: 'Two'},
+    {id: 3, label: 'Three'},
   ];
-  control = new FormControl();
   pattern = [];
   sentence = [];
-  utterance = [];
   generatedSentences = ['Lorem ipsum dolor sit amet, te stet cetero phaedrum has, sed diam modus nullam et',
     ' Numquam suavitate consulatu ex eam, falli dicant utinam est no',
     ' Mei ut purto theophrastus, sea nullam volutpat ea, Eam facer commune pericula ex'];
   patternOptions = ['POS', 'Punctuation', 'Word'];
   initPattern = ['POS', 'Word'];
+  public boxForm: FormGroup;
   modalOptions: NgbModalOptions;
   @Input() chosenUtterance;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private formBuilder: FormBuilder) {
     this.modalOptions = {
       backdrop: 'static',
       backdropClass: 'customBackdrop'
     };
   }
+
   ngOnInit(): void {
+    this.boxForm = this.formBuilder.group({
+      items: this.formBuilder.array([])
+    });
+  }
+
+  createBox(chosen): FormGroup {
+    return this.formBuilder.group({
+      example: ['', [Validators.required]],
+      pattern: [chosen, [Validators.required]]
+    });
+  }
+
+  get items(): FormArray {
+    return this.boxForm.get('items') as FormArray;
   }
   addPattern(index) {
-    this.pattern.splice(index, 0, 'None');
-    this.sentence.splice(index, 0, '');
+    this.items.insert(index, this.createBox('None'));
   }
   removePattern(index) {
     const modalRef = this.modalService.open(RemoveChoiceModalComponent);
     modalRef.result.then((userResponse) => {
       if (userResponse === 'yes') {
-        this.pattern.splice(index, 1);
-        this.sentence.splice(index, 1);
-      }
-    });
-  }
-  addUtterance(index) {
-    this.utterance.splice(index, 0, 'None');
-  }
-  removeUtterance(index) {
-    const modalRef = this.modalService.open(RemoveChoiceModalComponent);
-    modalRef.result.then((userResponse) => {
-      if (userResponse === 'yes') {
-        this.utterance.splice(index, 1);
+        this.items.removeAt(index);
       }
     });
   }
@@ -88,25 +66,12 @@ export class ExampleGenerationComponent implements OnInit {
     this.userInput = true;
   }
   updatePattern(selected, index) {
-    this.pattern[index] = selected;
-  }
-  updateUtterance(selected, index) {
-    const modalRef = this.modalService.open(DictionaryModalComponent);
-    modalRef.componentInstance.myModalTitle = 'Choose a ' + selected;
-    modalRef.componentInstance.myModalContent = selected;
-
-    modalRef.result.then((userResponse) => {
-      if (userResponse !== '') {
-        this.utterance[index] = userResponse;
-      }
-    });
-  }
-  generate(type) {
-    if (type === 'pattern') {
-      // Populate generatedSentence according to pattern
-    } else if (type === 'utterance') {
-      // Populate generatedSentence according to Utterance
+    if (this.items.controls[index].value.pattern !== selected) {
+      this.items.removeAt(index);
+      this.items.insert(index, this.createBox(selected));
     }
+  }
+  generate() {
     this.generateSentence = true;
   }
   judge(index, verdict) {

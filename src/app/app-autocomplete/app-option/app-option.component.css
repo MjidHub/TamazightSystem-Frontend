@@ -12,7 +12,7 @@
   cursor: pointer;
   display: block;
   background-color: white;
-  width: auto;
+  width: 135px;
 }
 
 .option:hover {

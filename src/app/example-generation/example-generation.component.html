@@ -1,75 +1,73 @@
 <br>
 <div class="container form" role="main">
   <h1><b>Pattern</b></h1>
-  <div class="row">
-    <div *ngFor="let added of pattern; let i = index">
-      <div class="dropdown fixed-size">
-        <mat-icon style="color:green; cursor: pointer" (click)="addPattern(i)">add</mat-icon>
-        <mat-icon style="color:red; cursor: pointer" (click)="removePattern(i)">remove</mat-icon>
-        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton{{i}}"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{added}}
-        </button>
-        <div *ngIf="i === 0">
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#" *ngFor="let type of initPattern" (click)="updatePattern(type, i)">{{type}}</a>
-          </div>
-        </div>
-        <div *ngIf="i > 0">
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#" *ngFor="let type of patternOptions" (click)="updatePattern(type, i)">{{type}}</a>
+  <form [formGroup]="boxForm">
+    <div class="row">
+      <div formArrayName="items" *ngFor="let item of items.controls; let i = index;" style="margin-bottom: 10px">
+        <div class="form-group" [formGroupName]="i" >
+          <div class="dropdown fixed-size">
+            <mat-icon style="color:green; cursor: pointer" (click)="addPattern(i)">add</mat-icon>
+            <mat-icon style="color:red; cursor: pointer" (click)="removePattern(i)">remove</mat-icon>
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton{{i}}"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{items.controls[i].value.pattern}}
+            </button>
+            <div *ngIf="i === 0">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" *ngFor="let type of initPattern" (click)="updatePattern(type, i)">{{type}}</a>
+              </div>
+            </div>
+            <div *ngIf="i > 0">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#" *ngFor="let type of patternOptions" (click)="updatePattern(type, i)">{{type}}</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <mat-icon style="color:green; cursor: pointer" (click)="addPattern(items.length)">add</mat-icon>
     </div>
-    <mat-icon style="color:green; cursor: pointer" (click)="addPattern(pattern.length)">add</mat-icon>
-  </div>
+  </form>
   <div *ngIf="!userInput">
     <br>
     <div class="row">
-      <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
+      <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
               (click)="activateUserInput()">Input Sample</button>
-      <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
-              (click)="generate('pattern')">Generate Example</button>
+      <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
+              (click)="generate()">Generate Example</button>
     </div>
   </div>
   <div *ngIf="userInput">
     <br>
-    <div class="row">
-        <div class="fixed-size">
-          <div class="control">
-            <input class="form-control control-width"
-                   placeholder="Search..."
-                   [formControl]="control"
-                   [appAutocomplete]="autocomplete">
+    <form [formGroup]="boxForm">
+      <div class="row">
+        <div formArrayName="items" *ngFor="let item of items.controls; let i = index;" style="margin-bottom: 10px">
+          <div class="form-group" [formGroupName]="i" >
+            <div class="fixed-size">
+              <div class="control">
+                <input formControlName="example"
+                       class="form-control control-width"
+                       placeholder="Search..."
+                       [appAutocomplete]="autocomplete">
+              </div>
+              <app-autocomplete #autocomplete="appAutocomplete">
+                <ng-template appAutocompleteContent>
+                  <ng-container *ngIf="(options | filter: items.controls[i].value.example) as result">
+                    <app-option *ngFor="let option of result" [value]="option.label">
+                      {{ option.label }}
+                    </app-option>
+                    <app-option class="no-result" *ngIf="!result.length">No result...</app-option>
+                  </ng-container>
+                </ng-template>
+              </app-autocomplete>
+            </div>
           </div>
-          <app-autocomplete #autocomplete="appAutocomplete">
-            <ng-template appAutocompleteContent>
-              <ng-container *ngIf="(options | filter: control.value) as result">
-                <app-option *ngFor="let option of result" [value]="option.label">
-                  {{ option.label }}
-                </app-option>
-                <app-option class="no-result" *ngIf="!result.length">No result...</app-option>
-              </ng-container>
-            </ng-template>
-          </app-autocomplete>
-          <!--<input class="form-control control-width" [(ngModel)]="sentence[i]" type="text"
-                 (ngModelChange)="filterInput(sentence[i])" id="word{{i}}" [attr.list]= />
-          <datalist id="dynamicWordsList{{i}}">
-            <option *ngFor="let item of filteredOptions" [value]="item">{{item}}</option>
-          </datalist>-->
-          <!--<ng2-completer class="control-width" [datasource]="patternOptions" [minSearchLength]="2"></ng2-completer>-->
-          <!--<input [disabled]="pattern[i] === 'None'" type="text" class="form-control control-width" placeholder=""
-                 id="word{{i}}" aria-label="Username"
-                 [(ngModel)]="word" #it="ngModel" required>
-          <div *ngIf="pattern[i] !== 'None'">
-            <small>Type a {{pattern[i]}} here</small>
-          </div>-->
+        </div>
       </div>
-    </div>
+    </form>
     <br>
-    <button type="button" class="btn btn-outline-success" [disabled]="pattern.length === 0"
-            (click)="generate('pattern')">Generate Example</button>
+    <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
+            (click)="generate()">Generate Example</button>
   </div>
   <div *ngIf="generateSentence">
     <br>

@@ -30,6 +30,9 @@ export class AutocompleteDirective implements OnInit {
     fromEvent(this.origin, 'focus').pipe(
       untilDestroyed(this)
     ).subscribe(() => {
+      if (this.overlayRef) {
+        return;
+      }
       this.openDropdown();
 
       this.appAutocomplete.optionsClick()

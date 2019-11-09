@@ -9,7 +9,7 @@ import { AngularMaterialModule } from '../modules/angular-material.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { DictionaryModalComponent } from './modals/dictionary-modal/dictionary-modal.component';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { RemoveChoiceModalComponent } from './modals/remove-choice-modal/remove-choice-modal.component';
 import { MatTabsModule } from '@angular/material';
 import { ExampleGenerationComponent } from './example-generation/example-generation.component';
