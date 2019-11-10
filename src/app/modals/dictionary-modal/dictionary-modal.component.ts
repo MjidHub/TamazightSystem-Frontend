@@ -8,18 +8,24 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DictionaryModalComponent implements OnInit {
 
-  @Input() myModalTitle;
-  @Input() myModalContent;
-  words = ['Maryouma', 'cat', 'dog', 'Simpson', 'occur', 'capital', 'Omar', 'table', 'hamburger'];
-  punctuations = [',', ';', '.', '?', '!', ':'];
-  partsOS = ['Adjectives', 'Adverbs', 'Conjunctions', 'Interjections', 'Nouns', 'Prepositions', 'Pronouns', 'Verbs'];
+  numberOfExamples: number;
 
   constructor(public activeModal: NgbActiveModal) {}
 
   ngOnInit() {
   }
-  close(selected) {
-    this.activeModal.close(selected);
+  checkNumber() {
+    if (this.numberOfExamples < 0) {
+      this.numberOfExamples = 0;
+    } else if (this.numberOfExamples > 10) {
+      this.numberOfExamples = 10;
+    }
+  }
+  confirm() {
+    this.activeModal.close(this.numberOfExamples);
+  }
+  close() {
+    this.activeModal.close(0);
   }
 
 }

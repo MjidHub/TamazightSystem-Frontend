@@ -1,37 +1,27 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{myModalTitle}}</h4>
+  <h4 class="modal-title">How many examples would you like to generate?</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <div [ngSwitch]="myModalContent">
-    <div *ngSwitchCase="'Word'">
-      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
-        <div *ngFor="let word of words">
-          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
-                  class="btn btn-outline-primary" (click)="close(word)">{{word}}</button>
-        </div>
-      </div>
+  <div class="row">
+    <div class="align-field">
+      <p> I would like to generate </p>
     </div>
-    <div *ngSwitchCase="'Punctuation'">
-      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
-        <div *ngFor="let punct of punctuations">
-          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
-                  class="btn btn-outline-primary" (click)="close(punct)">{{punct}}</button>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'POS'">
-      <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px grid">
-        <div *ngFor="let pos of partsOS">
-          <button type="button" fxFlex="0 1 calc(33.3% - 32px)"
-                  class="btn btn-outline-primary" (click)="close(pos)">{{pos}}</button>
-        </div>
-      </div>
+    <input type="number"
+           [(ngModel)]="numberOfExamples"
+           [min]="0"
+           [max]="10"
+           (keyup)="checkNumber()"
+           class="form-control control-margin"
+           placeholder="0">
+    <div class="align-field">
+      <p> Example(s) </p>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-danger" (click)="close('')">Close</button>
+  <button type="button" class="btn btn-outline-success" (click)="confirm()">Confirm</button>
+  <button type="button" class="btn btn-outline-danger" (click)="close()">Cancel</button>
 </div>
