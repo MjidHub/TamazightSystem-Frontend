@@ -1,6 +1,7 @@
 <br>
-<div class="container form" role="main">
+<div class="container form" role="main" style="height: 100vh">
   <h1><b>Pattern</b></h1>
+  <br>
   <form [formGroup]="boxForm">
     <div class="row">
       <div formArrayName="items" *ngFor="let item of items.controls; let i = index;" style="margin-bottom: 10px">
@@ -31,13 +32,15 @@
   <div *ngIf="!userInput">
     <br>
     <div class="row">
-      <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
+      <button type="button" class="btn btn-outline-primary" [disabled]="items.length === 0"
               (click)="activateUserInput()">Input Sample</button>
-      <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
+      <button type="button" class="btn btn-outline-primary" style="margin-left: 10px" [disabled]="items.length === 0"
               (click)="generate()">Generate Example</button>
     </div>
   </div>
   <div *ngIf="userInput">
+    <br>
+    <h1><b>User Example</b></h1>
     <br>
     <form [formGroup]="boxForm">
       <div class="row">
@@ -47,14 +50,15 @@
               <div class="control">
                 <input formControlName="example"
                        class="form-control control-width"
-                       placeholder="Search..."
+                       placeholder="ⴹⵡⵔ..."
+                       (keyup)="tifinaghConversion(i)"
                        [appAutocomplete]="autocomplete">
               </div>
               <app-autocomplete #autocomplete="appAutocomplete">
                 <ng-template appAutocompleteContent>
-                  <ng-container *ngIf="(options | filter: items.controls[i].value.example) as result">
-                    <app-option *ngFor="let option of result" [value]="option.label">
-                      {{ option.label }}
+                  <ng-container *ngIf="(options[i] | filter: items.controls[i].value.example) as result">
+                    <app-option *ngFor="let option of result" [value]="option">
+                      {{ option }}
                     </app-option>
                     <app-option class="no-result" *ngIf="!result.length">No result...</app-option>
                   </ng-container>
@@ -66,12 +70,16 @@
       </div>
     </form>
     <br>
-    <button type="button" class="btn btn-outline-success" [disabled]="items.length === 0"
+    <button type="button" class="btn btn-outline-success"
+            (click)="submitExample('yes')">Submit Correct Example</button>
+    <button type="button" class="btn btn-outline-danger" style="margin-left: 10px"
+            (click)="submitExample('no')">Submit Wrong Example</button>
+    <button type="button" class="btn btn-outline-primary" style="margin-left: 10px"
             (click)="generate()">Generate Example</button>
   </div>
   <div *ngIf="generateSentence">
     <br>
-    <h2><b>System-Generated Example</b></h2>
+    <h2><b>System-Generated Example(s)</b></h2>
     <div class="container">
       <div *ngFor="let sentence of generatedSentences; let k = index">
         <div class="row">

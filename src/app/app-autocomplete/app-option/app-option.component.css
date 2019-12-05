@@ -16,5 +16,6 @@
 }
 
 .option:hover {
-  background-color: lightgrey;
+  background-color: #007bff;
+  color: white;
 }

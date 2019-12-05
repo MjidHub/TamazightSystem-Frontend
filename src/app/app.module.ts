@@ -21,6 +21,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterPipe } from './example-generation/filter.pipe';
 import {CommonModule} from '@angular/common';
 import {AutocompleteModule} from './app-autocomplete/autocomplete.module';
+import { SibmitSuccessModalComponent } from './modals/sibmit-success-modal/sibmit-success-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {AutocompleteModule} from './app-autocomplete/autocomplete.module';
     RemoveChoiceModalComponent,
     ExampleGenerationComponent,
     WordAdditionFormComponent,
-    FilterPipe
+    FilterPipe,
+    SibmitSuccessModalComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ import {AutocompleteModule} from './app-autocomplete/autocomplete.module';
   entryComponents: [
     DictionaryModalComponent,
     RemoveChoiceModalComponent,
+    SibmitSuccessModalComponent,
     AutocompleteComponent
   ],
   providers: [],
