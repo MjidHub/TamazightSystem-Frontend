@@ -2,7 +2,7 @@
 <div class="container form" role="main" style="height: 100vh">
   <h1><b>Pattern</b></h1>
   <br>
-  <form [formGroup]="boxForm">
+  <form [formGroup]="boxForm" autocomplete="off">
     <div class="row">
       <div formArrayName="items" *ngFor="let item of items.controls; let i = index;" style="margin-bottom: 10px">
         <div class="form-group" [formGroupName]="i" >
@@ -81,11 +81,15 @@
     <br>
     <h2><b>System-Generated Example(s)</b></h2>
     <div class="container">
+      <br>
+      <div *ngIf="generatedSentences.length === 0">
+        <p>No more sentences to show</p>
+      </div>
       <div *ngFor="let sentence of generatedSentences; let k = index">
         <div class="row">
           <p>{{sentence}}</p>
-          <mat-icon class ="padded" style="color:green; cursor: pointer" (click)="judge(k, 'yes')">done</mat-icon>
-          <mat-icon class="padded" style="color:red; cursor: pointer" (click)="judge(k, 'no')">clear</mat-icon>
+          <mat-icon style="color:green; cursor: pointer" (click)="judge(k, 'yes')">done</mat-icon>
+          <mat-icon style="color:red; cursor: pointer" (click)="judge(k, 'no')">clear</mat-icon>
         </div>
       </div>
     </div>

@@ -1,0 +1,19 @@
+<div class="modal-nstuff">
+  <div class="modal-header">
+    <h4 class="modal-title">{{header}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{content}}</p>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="header === 'Submitted Successfully'">
+      <button type="button" class="btn btn-outline-success" (click)="close('')">Ok</button>
+    </div>
+    <div *ngIf="header !== 'Submitted Successfully'">
+      <button type="button" class="btn btn-outline-danger" (click)="close('')">Ok</button>
+    </div>
+  </div>
+</div>

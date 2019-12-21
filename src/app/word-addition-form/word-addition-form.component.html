@@ -1,5 +1,5 @@
 <br><br>
-<form class="container">
+<form class="container" autocomplete="off">
   <div class="text-center">
     <h1><b>Word Input</b></h1>
   </div>
@@ -9,8 +9,20 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Word Base Form</span>
       </div>
-      <input type="text" class="form-control" name="base" [(ngModel)]="newWord['Base Form']" #ctrl="ngModel" required
-             placeholder="ⴰⵔⴻ ⴰⵡⴰⵍ ⵖⵉ" aria-label="Username" aria-describedby="basic-addon1">
+      <input type="text" class="form-control" name="base" (keyup)="tifinaghConversion('Base Form')"
+             [(ngModel)]="newWord['Base Form']" #ctrl="ngModel" required
+             placeholder="ⴰⵔⴻ ⴰⵡⴰⵍ ⵖⵉ" aria-label="Base" aria-describedby="basic-addon1">
+    </div>
+  </div>
+  <br>
+  <div *ngIf="newWord['Type'] === 'Verb'" class="form-inline">
+    <div class="input-group mb-3 mx-auto">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="radical">Verb Radical Form</span>
+      </div>
+      <input type="text" class="form-control" name="radical"
+             (keyup)="tifinaghConversion('Radical')" [(ngModel)]="newWord['Radical']" #ctrl="ngModel" required
+             placeholder="ⴰⵔⴻ ⴰⵡⴰⵍ ⵖⵉ" aria-label="Radical" aria-describedby="basic-addon2">
     </div>
   </div>
   <br>
@@ -19,7 +31,7 @@
   </div>
   <br>
   <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="25px grid">
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div fxFlex="0 1 calc(33.3% - 32px)">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="type">Word Type</span>
@@ -33,7 +45,7 @@
           </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Preposition'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="annex">Word Annex</span>
@@ -47,7 +59,8 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Proper Noun' || newWord['Type'] === 'Common Noun' || newWord['Type'] === 'Adjective'"
+         fxFlex="0 1 calc(33.3% - 32px)">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="state">Word State</span>
@@ -61,21 +74,7 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="radical">Word Radical</span>
-        </div>
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownRadical"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{newWord['Radical']}}
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#" *ngFor="let radical of radicals" (click)="updateSelection('Radical', radical)">{{radical}}</a>
-        </div>
-      </div>
-    </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Verb'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="aspect">Word Aspect</span>
@@ -89,12 +88,12 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Verb' || newWord['Type'] === 'Proper Noun' || newWord['Type'] === 'Common Noun'
+          || newWord['Type'] === 'Adjective' || newWord['Type'] === 'Pronoun'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class=" input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="gender">Word Gender</span>
         </div>
-
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownGender"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{newWord['Gender']}}
@@ -104,7 +103,22 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Pronoun'" fxFlex="0 1 calc(33.3% - 32px)">
+      <div class=" input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="postype">Pronoun Type</span>
+        </div>
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownPOSType"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{newWord['POSType']}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" *ngFor="let type of POSTypes" (click)="updateSelection('POSType', type)">{{type}}</a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="newWord['Type'] === 'Verb' || newWord['Type'] === 'Proper Noun' || newWord['Type'] === 'Common Noun'
+          || newWord['Type'] === 'Pronoun'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class=" input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="person">Word Person</span>
@@ -118,7 +132,8 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Verb' || newWord['Type'] === 'Proper Noun' || newWord['Type'] === 'Common Noun'
+          || newWord['Type'] === 'Adjective' || newWord['Type'] === 'Pronoun'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class=" input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="number">Word Number</span>
@@ -133,7 +148,7 @@
         </div>
       </div>
     </div>
-    <div  fxFlex="0 1 calc(33.3% - 32px)">
+    <div *ngIf="newWord['Type'] === 'Verb'" fxFlex="0 1 calc(33.3% - 32px)">
       <div class=" input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="tense">Word Tense</span>

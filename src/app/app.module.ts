@@ -22,6 +22,8 @@ import { FilterPipe } from './example-generation/filter.pipe';
 import {CommonModule} from '@angular/common';
 import {AutocompleteModule} from './app-autocomplete/autocomplete.module';
 import { SibmitSuccessModalComponent } from './modals/sibmit-success-modal/sibmit-success-modal.component';
+import { FeedbackModalComponent } from './modals/feedback-modal/feedback-modal.component';
+import { YouSureModalComponent } from './modals/you-sure-modal/you-sure-modal.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { SibmitSuccessModalComponent } from './modals/sibmit-success-modal/sibmi
     ExampleGenerationComponent,
     WordAdditionFormComponent,
     FilterPipe,
-    SibmitSuccessModalComponent
+    SibmitSuccessModalComponent,
+    FeedbackModalComponent,
+    YouSureModalComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,8 @@ import { SibmitSuccessModalComponent } from './modals/sibmit-success-modal/sibmi
     DictionaryModalComponent,
     RemoveChoiceModalComponent,
     SibmitSuccessModalComponent,
+    FeedbackModalComponent,
+    YouSureModalComponent,
     AutocompleteComponent
   ],
   providers: [],
